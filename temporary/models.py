@@ -5,8 +5,8 @@ from users.models import User
 
 
 class YourModelManager(models.Manager):
-    def old_records(self):
-        return self.filter(date_add__lt=timezone.now() - timezone.timedelta(days=7))
+    def records_to_delete(self):
+        return self.filter(date_add__lte=timezone.now() - timezone.timedelta(days=7))
 
 
 class Temporary(models.Model):
@@ -28,10 +28,13 @@ class Temporary(models.Model):
     day = models.CharField(choices=DAY_CHOICES, max_length=3)
     shift_type = models.CharField(max_length=10, choices=SHIFT_CHOICES)
     custom_time = models.CharField(max_length=255, null=True, blank=True)
-    date_add = models.DateTimeField(auto_now_add=True)
+    date_add = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     objects = YourModelManager()
 
     def __str__(self):
         return f'{self.day} - {self.shift_type}'
+
+    def should_be_deleted(self):
+        return self.date_add <= timezone.now() - timezone.timedelta(days=7)
