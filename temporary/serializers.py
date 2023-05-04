@@ -6,13 +6,13 @@ from .models import Temporary
 class TemporarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Temporary
-        fields = ['id', 'day', 'shift_type', 'custom_time']
+        fields = ['id', 'day', 'shift_type', 'custom_time', 'night']
 
 
 class TemporaryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Temporary
-        fields = ['id', 'day', 'shift_type', 'custom_time']
+        fields = ['id', 'day', 'shift_type', 'night', 'custom_time']
 
     def validate_custom_time(self, value):
         shift_choices = Temporary.SHIFT_CHOICES

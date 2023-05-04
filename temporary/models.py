@@ -30,6 +30,7 @@ class Temporary(models.Model):
     custom_time = models.CharField(max_length=255, null=True, blank=True)
     date_add = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    night = models.BooleanField(default=False)
 
     objects = YourModelManager()
 
